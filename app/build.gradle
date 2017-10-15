@@ -4,6 +4,13 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'io.fabric'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
@@ -14,6 +21,17 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        def localFabricKey = ""
+        try {
+            def properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            localFabricKey = properties.getProperty("fabric_api_key")
+        } catch (Exception ignore) {
+            // no-op
+        }
+
+        manifestPlaceholders += [fabric_api_key: System.getenv('FABRIC_API_KEY') == null ? localFabricKey : System.getenv('FABRIC_API_KEY')]
     }
     buildTypes {
         release {
@@ -32,4 +50,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation('com.crashlytics.sdk.android:crashlytics:2.7.0@aar') {
+        transitive = true
+    }
 }
