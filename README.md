@@ -1,3 +1,3 @@
 # WantedlyTechBook3-Android-CI
 
-WANTEDLY TECHBOOK3のBitriseに関するRepositoryです
+WANTEDLY TECHBOOK3のBitriseの章のサンプルコードです
